@@ -37,8 +37,8 @@ class _signUpState extends State<signUp> {
             'userEmail' : email,
             'userPass' : pass,
             'userRole' : valueChoose,
-            'allowedLeaves' : 10,
-            'paidLeaves' : 10,
+            'allowedLeaves' : '10',
+            'paidLeaves' : '10',
           }).whenComplete(() => {
             Fluttertoast.showToast(msg: 'Signed Up Successfully!!'),
       });
@@ -136,7 +136,8 @@ class _signUpState extends State<signUp> {
                       onPressed: () async{
                         getValues();
                         await signUp();
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => home()));
+                        var doc =  await FirebaseFirestore.instance.collection('Users').doc('$valueChoose').collection('userDetails').doc(FirebaseAuth.instance.currentUser!.uid).get();
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => home(role: valueChoose,allowedLeaves: doc['allowedLeaves'], paidLeaves: doc['paidLeaves'],)));
                       },
                       height: MediaQuery.of(context).size.height * 0.04,
                       minWidth: MediaQuery.of(context).size.width *0.9,

@@ -45,7 +45,10 @@ class _signInState extends State<signIn> {
           .get();
       if (user != null && doc.exists && doc['userRole'] == valueChoose) {
         Fluttertoast.showToast(msg: "Logged In Successfully");
-        Navigator.push(context, MaterialPageRoute(builder: (context) => home()));
+
+
+        var doc =  await FirebaseFirestore.instance.collection('Users').doc('$valueChoose').collection('userDetails').doc(FirebaseAuth.instance.currentUser!.uid).get();
+        Navigator.push(context, MaterialPageRoute(builder: (context) => home(role: valueChoose, allowedLeaves: doc['allowedLeaves'], paidLeaves: doc['paidLeaves'],)));
       } else {
         Fluttertoast.showToast(msg: 'You are not registered as $valueChoose');
       }
@@ -142,7 +145,7 @@ class _signInState extends State<signIn> {
                       ),
                     ),
                     SizedBox(height: 100,),
-                    Text('Already have an account?? '),
+                    Text('Dont have an account?? '),
                     SizedBox(height: 10,),
                     MaterialButton(
                       onPressed: (){

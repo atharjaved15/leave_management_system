@@ -1,10 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:leave_management_system/home.dart';
+import 'package:leave_management_system/leaveRequests.dart';
+import 'package:leave_management_system/myAccount.dart';
+import 'package:leave_management_system/sendLeaveRequest.dart';
 import 'package:leave_management_system/signIn.dart';
 
 class profileBody extends StatelessWidget {
+  late String role;
+  profileBody({
+    required this.role,
+});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,24 +25,25 @@ class profileBody extends StatelessWidget {
               profileMenu(
                 "My Account",
                 Icons.account_circle,
-                  (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => home()));
+                  () async {
+                  var doc =  await FirebaseFirestore.instance.collection('Users').doc('$role').collection('userDetails').doc(FirebaseAuth.instance.currentUser!.uid).get();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => myAccount(email: doc['userEmail'], name: doc['userName'], role: role)));
                   }
               ),
               SizedBox(height: 20),
               profileMenu(
-                "Notifications",
+                "Leave Requests",
                 Icons.notifications,
-                      (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => home()));
+                      () async {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => leaveRequests(role: role)));
                   }
               ),
               SizedBox(height: 20),
               profileMenu(
-                "Feedback",
+                "Send Leave Request",
                 Icons.comment,
-                      (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => home()));
+                      () async {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => sendLeaveRequest(role: role,)));
                   }
               ),
               SizedBox(height: 20),
