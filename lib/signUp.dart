@@ -3,14 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:leave_management_system/home.dart';
-import 'package:leave_management_system/signUp.dart';
 
-class signIn extends StatefulWidget {
+class signUp extends StatefulWidget {
   @override
-  _signInState createState() => _signInState();
+  _signUpState createState() => _signUpState();
 }
 
-class _signInState extends State<signIn> {
+class _signUpState extends State<signUp> {
   late String name,email,pass;
 
   TextEditingController nameController= new TextEditingController();
@@ -28,32 +27,24 @@ class _signInState extends State<signIn> {
     email = emailController.text.toString();
     pass = passController.text.toString();
   }
-  Future<void> logIn(context) async {
-    getValues();
-    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    try{
-      UserCredential user = await firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: pass);
-      String Uid;
-      Uid = FirebaseAuth.instance.currentUser!.uid;
-      DocumentSnapshot doc = await firebaseFirestore
-          .collection('Users')
-          .doc('$valueChoose')
-          .collection('userDetails')
-          .doc('$Uid')
-          .get();
-      if (user != null && doc.exists && doc['userRole'] == valueChoose) {
-        Fluttertoast.showToast(msg: "Logged In Successfully");
-        Navigator.push(context, MaterialPageRoute(builder: (context) => home()));
-      } else {
-        Fluttertoast.showToast(msg: 'You are not registered as $valueChoose');
-      }
-    }
-    catch(e){
-      Fluttertoast.showToast(msg: e.toString());
+
+  Future<void> signUp () async {
+    if(name.isNotEmpty && email.isNotEmpty && pass.isNotEmpty){
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: pass);
+      await FirebaseFirestore.instance.collection('Users').doc('$valueChoose').collection('userDetails').doc(FirebaseAuth.instance.currentUser!.uid).set(
+          {
+            'userName' : name,
+            'userEmail' : email,
+            'userPass' : pass,
+            'userRole' : valueChoose,
+            'allowedLeaves' : 10,
+            'paidLeaves' : 10,
+          }).whenComplete(() => {
+            Fluttertoast.showToast(msg: 'Signed Up Successfully!!'),
+      });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -65,7 +56,7 @@ class _signInState extends State<signIn> {
             child: Image(image: AssetImage('images/logo.png') ),
           ),
           backgroundColor: Colors.purple[800],
-          title: Text('Login'  , style: TextStyle(color: Colors.white),),
+          title: Text('Sign Up'  , style: TextStyle(color: Colors.white),),
         ),
         body: Center(
           child: Container(
@@ -79,13 +70,24 @@ class _signInState extends State<signIn> {
                   children: [
                     Image.asset('images/employee.png', height: MediaQuery.of(context).size.height * 0.15,),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.06,),
-                    Text('Login' , style: TextStyle(fontSize: 22, fontWeight:FontWeight.bold),),
+                    Text('Sign Up' , style: TextStyle(fontSize: 22, fontWeight:FontWeight.bold),),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
                     TextField(
                       controller: emailController,
                       decoration: InputDecoration(
                         fillColor: Colors.grey[100],
                         hintText: 'Email',
+                        hoverColor: Colors.purple[800],
+                        prefixIcon: Icon(Icons.admin_panel_settings_outlined),
+
+                      ),
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02,),
+                    TextField(
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        fillColor: Colors.grey[100],
+                        hintText: 'Name',
                         hoverColor: Colors.purple[800],
                         prefixIcon: Icon(Icons.admin_panel_settings_outlined),
 
@@ -107,7 +109,7 @@ class _signInState extends State<signIn> {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
                     Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * 0.2,),
+                          horizontal: MediaQuery.of(context).size.width * 0.2,),
                       child: DropdownButton(
                         hint: Text('Sign Up As'),
                         dropdownColor: Colors.white,
@@ -132,29 +134,17 @@ class _signInState extends State<signIn> {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
                     MaterialButton(
                       onPressed: () async{
-                       await logIn(context);
+                        getValues();
+                        await signUp();
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => home()));
                       },
                       height: MediaQuery.of(context).size.height * 0.04,
                       minWidth: MediaQuery.of(context).size.width *0.9,
                       color: Colors.blueAccent,
                       child: Center(
-                        child: Text('Log In', style: TextStyle(color: Colors.white),),
-                      ),
-                    ),
-                    SizedBox(height: 100,),
-                    Text('Already have an account?? '),
-                    SizedBox(height: 10,),
-                    MaterialButton(
-                      onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => signUp()));
-                      },
-                      height: MediaQuery.of(context).size.height * 0.04,
-                      minWidth: MediaQuery.of(context).size.width *0.9,
-                      color: Colors.red,
-                      child: Center(
                         child: Text('Sign Up', style: TextStyle(color: Colors.white),),
                       ),
-                    ),
+                    )
 
 
 

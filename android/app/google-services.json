@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1022058652733",
+    "project_id": "leave-management-system-5bfba",
+    "storage_bucket": "leave-management-system-5bfba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1022058652733:android:0b99411b9baae863e8b654",
+        "android_client_info": {
+          "package_name": "com.developer.leave_management_system"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1022058652733-ir7i69k512fp4uvreuqn4f34snuepm8i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBf9g9HYKkaj3Eos6XLFEwmu8-l_q-jpbA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1022058652733-ir7i69k512fp4uvreuqn4f34snuepm8i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
