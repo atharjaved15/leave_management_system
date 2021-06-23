@@ -83,6 +83,8 @@ class _adminLeaveRequestsState extends State<adminLeaveRequests> {
                                                   Text('UserID:  ' + doc['userID'], style: TextStyle(color: Colors.white , fontSize: 8),),
                                                   SizedBox(height: 5,),
                                                   Text(doc['leaveDescription'] , style: TextStyle(color: Colors.white,fontSize: 25, fontWeight: FontWeight.bold,fontStyle: FontStyle.italic),),
+                                                  SizedBox(height: 5),
+                                                  Text(doc['requestStatus'] , style: TextStyle(color: Colors.white),),
 
                                                 ],
                                               )

@@ -23,7 +23,7 @@ class details extends StatefulWidget {
 class _detailsState extends State<details> {
 
   approveLeave()async{
-    await FirebaseFirestore.instance.collection('Faculty').doc(widget.leaveID).update(
+    await FirebaseFirestore.instance.collection(widget.role).doc(widget.leaveID).update(
         {
           'requestStatus' : 'approved',
         });
@@ -84,6 +84,7 @@ class _detailsState extends State<details> {
                   MaterialButton(
                     onPressed: () async{
                       await approveLeave();
+                      Navigator.pop(context);
                     },
                     height: MediaQuery.of(context).size.height * 0.04,
                     minWidth: MediaQuery.of(context).size.width *0.9,
@@ -97,7 +98,10 @@ class _detailsState extends State<details> {
                       await FirebaseFirestore.instance.collection('Faculty').doc(widget.leaveID).update(
                           {
                             'requestStatus' : 'declined',
-                          }).whenComplete(() => Fluttertoast.showToast(msg: 'Request Declined!'));
+                          }).whenComplete(() => {
+                      Fluttertoast.showToast(msg: 'Request Declined!'),
+                        Navigator.pop(context),
+                      });
                     },
                     height: MediaQuery.of(context).size.height * 0.04,
                     minWidth: MediaQuery.of(context).size.width *0.9,

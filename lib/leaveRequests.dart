@@ -39,7 +39,7 @@ class _leaveRequestsState extends State<leaveRequests> {
               if(snapshot.hasData){
                 final List<DocumentSnapshot> documents  = snapshot.data!.docs;
                 return ListView(
-                    children: documents.where((element) => element['requestStatus'] != 'approved')
+                    children: documents.where((element) => element['requestStatus'] != 'approved' && element['requestStatus'] != 'declined')
                         .map((doc) =>
                         InkWell(
                           onTap: (){
@@ -84,6 +84,8 @@ class _leaveRequestsState extends State<leaveRequests> {
                                                   Text('UserID:  ' + doc['userID'], style: TextStyle(color: Colors.white , fontSize: 8),),
                                                   SizedBox(height: 5,),
                                                   Text(doc['leaveDescription'] , style: TextStyle(color: Colors.white,fontSize: 25, fontWeight: FontWeight.bold,fontStyle: FontStyle.italic),),
+                                                  SizedBox(height: 5),
+                                                  Text(doc['requestStatus'] , style: TextStyle(color: Colors.white),),
 
                                                 ],
                                               )

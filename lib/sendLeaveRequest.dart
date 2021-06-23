@@ -30,15 +30,6 @@ class _sendLeaveRequestState extends State<sendLeaveRequest> {
   }
   sendLeaveRequest() async {
    if(leaveDescription.isNotEmpty && totalLeaves.isNotEmpty){
-     await FirebaseFirestore.instance.collection('leaveRequests').doc('requests').collection(FirebaseAuth.instance.currentUser!.uid).doc().set({
-       'leaveType': leaveType,
-       'leaveDescription' : leaveDescription,
-       'totalLeaves' : totalLeaves,
-       'date' : DateTime.now().toString(),
-       'requestStatus' : 'sent',
-       'userID': FirebaseAuth.instance.currentUser!.uid.toString(),
-     });
-
      await FirebaseFirestore.instance.collection(widget.role).doc().set({
        'leaveType': leaveType,
        'leaveDescription' : leaveDescription,

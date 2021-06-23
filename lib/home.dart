@@ -229,7 +229,7 @@ class home extends StatelessWidget {
             Container(
               height: MediaQuery.of(context).size.height * 0.5,
               child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('leaveRequests').doc('requests').collection(FirebaseAuth.instance.currentUser!.uid).snapshots(),
+                stream: FirebaseFirestore.instance.collection(role).snapshots(),
                 builder: (context , snapshot){
                   if(snapshot.hasData){
                     final List<DocumentSnapshot> documents  = snapshot.data!.docs;
@@ -239,7 +239,6 @@ class home extends StatelessWidget {
                             InkWell(
                               onTap: (){
                                 //Navigator.push(context, MaterialPageRoute(builder: (context) => details(role: doc['userRole'], leaveType: doc['leaveType'], id: doc['userID'], date: doc['date'], leaveDays: doc['totalLeaves'], leaveDetails: doc['leaveDescription'],leaveID: doc.id.toString(),)));
-
                               },
                               child: Padding(
                                   padding: const EdgeInsets.all(0.0),
@@ -279,6 +278,8 @@ class home extends StatelessWidget {
                                                       Text('Date:  ' + doc['date'], style: TextStyle(color: Colors.white , fontSize: 8),),
                                                       SizedBox(height: 5,),
                                                       Text(doc['leaveDescription'] , style: TextStyle(color: Colors.white,fontSize: 25, fontWeight: FontWeight.bold,fontStyle: FontStyle.italic),),
+                                                      SizedBox(height: 5),
+                                                      Text(doc['requestStatus'] , style: TextStyle(color: Colors.white),),
 
                                                     ],
                                                   )
