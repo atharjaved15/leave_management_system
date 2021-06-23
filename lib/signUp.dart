@@ -19,6 +19,7 @@ class _signUpState extends State<signUp> {
   TextEditingController passController = new TextEditingController();
 
   late String valueChoose = 'Faculty';
+  int check=0;
 
   List listItems = ['Director', 'HOD', 'Faculty'];
 
@@ -101,10 +102,18 @@ class _signUpState extends State<signUp> {
                         hintText: 'Password',
                         hoverColor: Colors.purple[800],
                         prefixIcon: Icon(Icons.lock),
-                        suffixIcon: InkWell(child: Icon(Icons.remove_red_eye),
+                        suffixIcon: InkWell(
+                          onTap: (){
+                            setState(() {
+                              if(check==0){check=1;}
+                              else
+                                check=0;
+                            });
+                          },
+                          child: Icon(Icons.remove_red_eye),
                         ),
                       ),
-                      obscureText: true,
+                      obscureText: check==0?true:false,
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.05,),
                     Padding(
